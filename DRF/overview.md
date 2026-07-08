@@ -64,6 +64,18 @@ We can user the GET method to delete an item, but this is against what REST says
 |pagination||
 |API Authentication (CSRF exempt by default)||
 
+Browseable view looks like a playground to explore the API. It is useful to test the API. This feature can be disabled in the settings.py file.
+
+Djnago returns an HttpResponse
+DRF returns a Response, which is inherited from the HttpResponse.
+
+DRF has changed the Django dispatcher. It will perform some actions before and after the dispatcher.
+
+DRF has defined an `OPTION` method.
+
+Django has Forms
+DRF has Serializers
+
 ## Useful Links
 https://restfulapi.net/  
 https://www.django-rest-framework.org/
