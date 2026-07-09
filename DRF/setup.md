@@ -172,7 +172,7 @@ class BookListAPIView(APIView):
 `IMPORTANT` Do not forget to look the resource!  
 https://www.django-rest-framework.org/tutorial/quickstart/#views
 
-## url.py
+## urls.py
 ```python
 from django.contrib import admin
 from django.urls import path
