@@ -101,8 +101,16 @@ Congratulations! Now, you can see the browseable view.
 
 
 # Implement CRUD
+|CRUD|Action|
+|--:|:--|
+|C|Create|
+|R|Read or Retrieve|
+|U|Update|
+|D|Delete or Destroy|
 
-## models.py
+## Read and Create a List of Items
+
+### models.py
 ```python
 from django.db import models
 
@@ -168,6 +176,8 @@ class BookListAPIView(APIView):
 
         return Response(s.errors, status=status.HTTP_400_BAD_REQUEST)
 ```
+
+`IMPORTANT` Learn how to customize the `get_exception_handler` method in `APIView` class. Look at [Exceptions](exceptions.md) 
 
 `IMPORTANT` Do not forget to look the resource!  
 https://www.django-rest-framework.org/tutorial/quickstart/#views
