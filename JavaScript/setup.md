@@ -1,8 +1,8 @@
-# VS Code Extensions
+# Set Up
+
+## VS Code Extensions
 - HTML CSS Support by ecmel
 - Live Server by Ritwick Dey
-
-# Files
 
 ## Type 1
 
