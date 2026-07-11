@@ -15,7 +15,7 @@
     <button type="button" id="login-btn">login</button>
 </form>
 ```
-`IMPORTANT` In the above form, the type of button has been set to `button` to handle a form that has nowhere to submit. Otherwise an error will be raised.
+`IMPORTANT` In the above form, the type of button has been set to `button` to handle a form that has nowhere to submit. Otherwise an error will be raised. This is also valid for an input tag. Note that, the default type is `submit`.
 
 ### JavaScript file
 `document` is everything between `<html>...</html>`.
