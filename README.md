@@ -5,8 +5,9 @@ My personal knowledge base for backend development, Linux, DevOps, networking, d
 
 - Python
 - PostgreSQL
-- [Django](Django/README.md)
-- [DRF](DRF/README.md)
+- [Django](/Django/README.md)
+- [DRF](/DRF/README.md)
+- [JavaScript](/JavaScript/README.md)
 - Git
 - Linux
 
