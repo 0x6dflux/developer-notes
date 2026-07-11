@@ -1,9 +1,10 @@
 # JavaScript
 
 ## Contents
-- [Overview](overview.md)
-- [Setup](setup.md)
-- [Data Structures](data_structures.md)
-- [Operators](operators.md)
-- [HTML Document Object Model (DOM)](/dom.md)
-- [Exceptions](exceptions.md)
+- [Overview](/JavaScript/overview.md)
+- [Setup](/JavaScript/setup.md)
+- [Data Structures](/JavaScript/data_structures.md)
+- [Operators](/JavaScript/operators.md)
+- [HTML Document Object Model (DOM)](/JavaScript/dom.md)
+- [AJAX](/JavaScript/ajax.md)
+- [Exceptions](/JavaScript/exceptions.md)
