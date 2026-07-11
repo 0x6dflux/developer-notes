@@ -5,3 +5,4 @@
 - [Setup](setup.md)
 - [Data Structures](data_structures.md)
 - [Operators](operators.md)
+- [Exceptions](exceptions.md)
