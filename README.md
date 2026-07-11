@@ -7,6 +7,7 @@ My personal knowledge base for backend development, Linux, DevOps, networking, d
 - PostgreSQL
 - [Django](/Django/README.md)
 - [DRF](/DRF/README.md)
+- [JavaScript](/JavaScript/README.md)
 - Git
 - Linux
 
