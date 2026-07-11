@@ -1,6 +1,7 @@
 # Asynchronous JavaScript And XML (AJAX)
 
 ## Template
+### Type 1 - Preferred
 ```javascript
 document.addEventListener('DOMContentLoaded', function () {
     // get the button element
@@ -43,4 +44,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 }); // end of DOMContentLoaded
 
+```
+
+### Type 2 - Old
+It is possible to add an `onclick` event on the HTML tag. Note that, there are other `on<event>`.
+```html
+<button onclick='submitLoginForm(event)'>
+```
+```javascript
+function submitLoginForm(event) {
+    // lots of valuable info will be stored in the event, which a PointerEvent
+    // one of useful attribute is target which gives the html element
+    console.log(event.target)
+}
 ```
