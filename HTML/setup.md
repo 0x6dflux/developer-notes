@@ -24,7 +24,9 @@ Add below lines in the `body` section.
     <!-- import other javascript files -->
 </body>
 ```
-`IMPORTANT` Do not user jquery slim version `https://code.jquery.com/jquery-4.0.0.slim.min.js`, it does not have AJAX.
+`IMPORTANT` Do not user jquery slim version `https://code.jquery.com/jquery-4.0.0.slim.min.js`, it does not have AJAX.   
+
+`IMPORTANT` Write your AJAX request in another JavaScript file and add an script tag at the end of your imports.
 
 ## Template
 resource: https://getbootstrap.com/docs/4.6/getting-started/introduction/
