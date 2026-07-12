@@ -9,3 +9,4 @@
 - [AJAX](/JavaScript/ajax.md)
 - [Exceptions](/JavaScript/exceptions.md)
 - [jQuery](/JavaScript/jquery.md)
+- [JavaScript Fetch API](/JavaScript/js_fetch_api.md)
