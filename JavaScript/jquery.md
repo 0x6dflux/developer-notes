@@ -91,6 +91,63 @@ $(document).ready(function(){
 });
 ```
 
+### Chain of Selector
+Suppose, you want to find another HTML element, e.g. a button, within a form. There are several approaches.
+
+resource: https://stackoverflow.com/questions/5808606/jquery-selecting-elements-from-inside-a-element
+
+```javascript
+// type 1
+
+
+const loginForm = $('#login-form');
+// the above syntax will store a `JQuery<HTMLElement>` in the variable.
+
+loginForm > $('#login-btn').on('click', function () {
+    // write your expressions
+});
+
+// or
+
+$('#login-form') > $('#login-btn').on('click', function () {
+    // write your expressions
+});
+```
+
+```javascript
+// type 2
+
+
+const loginForm = $('#login-form');
+const loginButton = loginForm.find('#login-btn');
+
+// or
+
+const loginForm = $('#login-form');
+const loginButton = loginForm.find($('#login-btn'));
+```
+`IMPORTANT` Combining types 1 and 2 are `NOT` possible.
+```javascript
+// not working
+
+const loginForm = $('#login-form');
+const loginButton = loginForm > $('#login-btn');
+// the above syntax will result in 'false'
+```
+
+```javascript
+// type 3
+
+
+$('#login-form > #login-btn').on('click', function () {
+    // write your expressions
+    // note that, `this` refers to the latest jQuery<HTMLElement> object
+    // in this case, `this` or `$(this)` refers to the $('#login-btn')
+});
+```
+
+`IMPORTANT` I personally prefer types 1 and 2. Since the element is stored in a variable and can be accessed later.
+
 ### jQuery Selector Tester
 resource: https://www.w3schools.com/jquery/trysel.asp
 
