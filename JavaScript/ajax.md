@@ -34,9 +34,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     'username': usernameValue,
                     'password': passwordValue
                 }
+                
                 // send request and send data in body
                 // depending on your backend, csrf may be required
                 // some drf projects exempt the csrf, some do not
+
+                $.ajax({
+                    url: 'http://localhost:8004/',
+                    type: 'POST',
+                    data: JSON.stringify({ "username": "test" }),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (data) { },
+                    error: function (rs, e) { }
+                });
+                
             }
         }
 
