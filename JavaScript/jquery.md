@@ -24,6 +24,18 @@ All selectors in jQuery start with the dollar sign and parentheses: `$()`.
 
 ### The Element Name Selector
 ```javascript
+$(function(){
+    // the above function will be executed when the DOM is ready
+    $('button').on('click', function(){
+        // the above function will be executed when a button is clicked
+        $('p').hide();
+    });
+});
+
+// *****************************************************
+// below syntaxes are deprecated, but still functioning
+// *****************************************************
+
 $(document).ready(function(){
   $("button").click(function(){
     // When a user clicks on a button, all <p> elements will be hidden
@@ -34,6 +46,19 @@ $(document).ready(function(){
 
 ### The #id Selector
 ```javascript
+$(function(){
+    // the above function will be executed when the DOM is ready
+    $('button').on('click', function(){
+        // the above function will be executed when a button is clicked
+        $('#test').hide();
+        // When a user clicks on a button, the element with id="test" will be hidden
+    });
+});
+
+// *****************************************************
+// below syntaxes are deprecated, but still functioning
+// *****************************************************
+
 $(document).ready(function(){
   $("button").click(function(){
     // When a user clicks on a button, the element with id="test" will be hidden
@@ -44,6 +69,19 @@ $(document).ready(function(){
 
 ### The .class Selector
 ```javascript
+$(function(){
+    // the above function will be executed when the DOM is ready
+    $('button').on('click', function(){
+        // the above function will be executed when a button is clicked
+        $('.test').hide();
+        // When a user clicks on a button, the elements with class="test" will be hidden
+    });
+});
+
+// *****************************************************
+// below syntaxes are deprecated, but still functioning
+// *****************************************************
+
 $(document).ready(function(){
   $("button").click(function(){
     // When a user clicks on a button, the elements with class="test" will be hidden
@@ -71,6 +109,16 @@ This method allows us to execute a function when the document is fully loaded.
 This method attaches an event handler function to an HTML element. The function is executed when the user clicks on the HTML element.
 
 ```javascript
+$('p').on('click', function(){
+    $(this).hide();
+    // note that the hide is a method of jQuery.
+    // without using $(), this method will not work.
+});
+
+// *****************************************************
+// below syntaxes are deprecated, but still functioning
+// *****************************************************
+
 $("p").click(function(){
     // When a click event fires on a <p> element
     // hide the current <p> element
