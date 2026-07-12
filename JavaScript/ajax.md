@@ -1,4 +1,5 @@
 # Asynchronous JavaScript And XML (AJAX)
+what about other syntaxes???
 
 ## Template
 ### Type 1 - Preferred
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     'username': usernameValue,
                     'password': passwordValue
                 }
-                
+
                 // send request and send data in body
                 // depending on your backend, csrf may be required
                 // some drf projects exempt the csrf, some do not
@@ -45,8 +46,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     data: JSON.stringify({ "username": "test" }),
                     contentType: 'application/json',
                     dataType: 'json',
-                    success: function (data) { },
-                    error: function (rs, e) { }
+                    success: function (data) { 
+                        // responses with status code of success (2xx and 3xx ranges) come here
+                        
+                        // use data.responseJSON
+                        // data.responseText needs json load
+                    },
+                    error: function (rs, e) { 
+                        // responses with status code of failure (4xx and 5xx ranges) come here
+
+                    }
                 });
                 
             }
@@ -69,4 +78,33 @@ function submitLoginForm(event) {
     // one of useful attribute is target which gives the html element
     console.log(event.target)
 }
+```
+
+
+## formData
+See the link below to create a FormData instance from the HTML form element.
+
+resource: https://www.geeksforgeeks.org/jquery/how-to-send-formdata-objects-with-ajax-requests-in-jquery/
+
+```javascript
+let formData = new FormData();
+formData.append('phone': '09123456789');
+formData.append('method': 'otp');
+```
+
+
+## Local Storage
+resources:
+- https://www.geeksforgeeks.org/javascript/javascript-localstorage/
+- https://www.w3schools.com/jsref/prop_win_localstorage.asp
+```javascript
+localStorage('access', <access_value>)
+```
+
+
+## Redirect to another Page
+```javascript
+window.location.replace('/new_url/');
+// or
+window.location.href = '/new_url/';
 ```
