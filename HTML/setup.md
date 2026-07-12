@@ -18,15 +18,11 @@ Add below lines in the `body` section.
     ...
 
     <!-- follow the order of import -->
-    <script src='jquery_3.5.1.min.js'></script>
     <script src='popper1.16.1.min.js'></script>
     <script src='bootstrap_4.6.2_min.js'></script>
     <!-- import other javascript files -->
 </body>
 ```
-`IMPORTANT` Do not user jquery slim version `https://code.jquery.com/jquery-4.0.0.slim.min.js`, it does not have AJAX.   
-
-`IMPORTANT` Write your AJAX request in another JavaScript file and add an script tag at the end of your imports.
 
 ## Template
 resource: https://getbootstrap.com/docs/4.6/getting-started/introduction/
