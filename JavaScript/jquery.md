@@ -1,10 +1,10 @@
+# jQuery
 send request to a backend server
 
 other applications (e.g. to interact with the page), which requires a good understanding of javascript (need time)
 
 it is also possible to send a request to a backend server using javascript, but, using jquery is better, clean, and easy to debug.
 
-# jQuery
 API Documentation: https://api.jquery.com/
 
 Download jQuery: https://jquery.com/download/
@@ -22,27 +22,6 @@ jQuery selectors are used to "find" (or select) HTML elements based on their nam
 
 All selectors in jQuery start with the dollar sign and parentheses: `$()`.
 
-### The Element Name Selector
-```javascript
-$(function(){
-    // the above function will be executed when the DOM is ready
-    $('button').on('click', function(){
-        // the above function will be executed when a button is clicked
-        $('p').hide();
-    });
-});
-
-// *****************************************************
-// below syntaxes are deprecated, but still functioning
-// *****************************************************
-
-$(document).ready(function(){
-  $("button").click(function(){
-    // When a user clicks on a button, all <p> elements will be hidden
-    $("p").hide();
-  });
-});
-```
 
 ### The #id Selector
 ```javascript
@@ -86,6 +65,28 @@ $(document).ready(function(){
   $("button").click(function(){
     // When a user clicks on a button, the elements with class="test" will be hidden
     $(".test").hide();
+  });
+});
+```
+
+### The Element Name Selector
+```javascript
+$(function(){
+    // the above function will be executed when the DOM is ready
+    $('button').on('click', function(){
+        // the above function will be executed when a button is clicked
+        $('p').hide();
+    });
+});
+
+// *****************************************************
+// below syntaxes are deprecated, but still functioning
+// *****************************************************
+
+$(document).ready(function(){
+  $("button").click(function(){
+    // When a user clicks on a button, all <p> elements will be hidden
+    $("p").hide();
   });
 });
 ```
