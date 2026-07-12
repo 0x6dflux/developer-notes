@@ -8,7 +8,4 @@
 - [HTML Document Object Model (DOM)](/JavaScript/dom.md)
 - [AJAX](/JavaScript/ajax.md)
 - [Exceptions](/JavaScript/exceptions.md)
-
-
-### Coming Soon
-- [jQuery]()
+- [jQuery](/JavaScript/jquery.md)
