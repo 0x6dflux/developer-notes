@@ -183,3 +183,69 @@ $("p").click(function(){
     $(this).hide();
 });
 ```
+
+
+## Working with Form
+```html
+<form id="login-form" action="http://localhost:8004/" method="post">
+    <label for="username">username</label>
+    <input type="text" id="username" name="username">
+
+    <label for="password">password</label>
+    <input type="password" id="password" name="password">
+    
+    <button type="button" id="login-btn">login</button>
+</form>
+```
+```javascript
+const loginForm = $('#login-form');
+const usernameInput = loginForm.find('#username');
+const passwordInput = loginForm.find('#password');
+
+const usernameValue = usernameInput.val();
+const passwordValue = passwordInput.val();
+// or
+const usernameValue = usernameInput[0].value;
+const passwordValue = passwordInput[0].value;
+```
+
+`Note` The `val()` method is used to get and set the value of an input.
+
+resources:
+- https://www.w3schools.com/jquery/jquery_dom_get.asp
+- https://www.w3schools.com/jquery/jquery_dom_set.asp
+- https://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_dom_html_set
+```javascript
+const usernameValue = usernameInput.val();
+// gets the value of the input and stores it in usernameValue variable
+
+
+usernameInput.val('some text');
+// sets the value of the input
+```
+
+`Note` The `usernameInput[0]` returns the HTMLElement and HTML DOM elements work on it. Please see this link https://www.w3schools.com/jsref/dom_obj_all.asp.
+
+another resource: https://www.geeksforgeeks.org/jquery/how-to-replace-innerhtml-of-a-div-using-jquery/
+```javascript
+usernameInput[0].classList.remove('d-none');
+usernameInput[0].classList.add('d-none');
+
+
+usernameInput[0].innerHTML = 'some text or <p>HTML Tag</p>';
+// or
+usernameInput.html('some text or <p>HTML Tag</p>');
+```
+
+`IMPORTANT` The `loginForm` jQuery\<HTMLElement> object has an `attr()` method which is useful to obtain the destination url of a form element, specified in the action section.
+
+resource: https://api.jquery.com/category/attributes/
+
+```javascript
+url: loginForm.attr('action'),
+```
+
+`IMPORTANT` The `loginForm` jQuery\<HTMLElement> object has a `serialize()` method which is useful in sending a POST ajax request.
+```javascript
+data: loginForm.serialize(),
+```
