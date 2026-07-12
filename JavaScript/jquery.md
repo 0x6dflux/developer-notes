@@ -249,3 +249,115 @@ url: loginForm.attr('action'),
 ```javascript
 data: loginForm.serialize(),
 ```
+
+
+## Send a Request Using AJAX
+resources:
+- https://www.geeksforgeeks.org/html/how-to-submit-a-form-using-ajax-in-jquery/
+- https://www.geeksforgeeks.org/javascript/how-to-use-an-http-get-or-post-for-ajax-calls/
+
+### GET
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/aparat/bootstrap-grid.min.css">
+</head>
+
+<body>
+    <div id="myDiv">
+        <p class="d-none" id="myParagraph"></p>
+        <button id="myBtn">Say Hi</button>
+    </div>
+
+    <script src="jquery-4.0.0.min.js"></script>
+    <script src="home.js"></script>
+</body>
+
+</html>
+```
+
+```javascript
+$(function () {
+    const myDiv = $('#myDiv');
+
+    myDiv > $('#myBtn').on('click', function () {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8004/',
+            success: function (data) {
+                const myParagraph = myDiv.find('#myParagraph');
+                myParagraph[0].classList.remove('d-none');
+                myParagraph.html(data['message']);
+            },
+            error: function (rs, e) {
+                alert('Can not say hi right now! Try again.');
+            }
+        })
+    });
+});
+```
+
+### POST
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="login-form" action="http://localhost:8004/" method="post">
+        <label for="username">username</label>
+        <input type="text" id="username" name="username">
+
+        <label for="password">password</label>
+        <input type="password" id="password" name="password">
+
+        <button type="button" id="login-btn">login</button>
+    </form>
+
+    <script src="jquery-4.0.0.min.js"></script>
+    <script src="home.js"></script>
+</body>
+
+</html>
+```
+
+```javascript
+$(document).ready(function () {
+
+    const loginForm = $('#login-form');
+
+    loginForm > $('#login-btn').on('click', function () {
+        const usernameValue = loginForm.find('#username').val();
+        const passwordValue = loginForm.find('#password').val();
+
+        if (usernameValue && passwordValue) {
+            $.ajax({
+                type: 'POST',
+                url: loginForm.attr('action'),
+                data: loginForm.serialize(),
+                success: function (data) {
+                    console.log('success:', data);
+                },
+                error: function (rs, e) {
+                    console.log('error', rs);
+                }
+            })
+        }
+        else {
+            alert('username and password are required.');
+        }
+
+    }); // end - login-btn click
+
+}); // end - document ready
+```
