@@ -10,7 +10,7 @@
 - [ViewSet](/DRF/viewset.md)
     - ViewSet
     - GenericViewSet
-- [Router](/DRF/router.md)
+- [Routers](/DRF/routers.md)
 - [Serializers](/DRF/serializers.md)
     - ModelSerializer
     - Serializer
