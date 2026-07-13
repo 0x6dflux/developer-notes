@@ -113,3 +113,34 @@ class BookDetailAPIView(RetrieveUpdateDestroyAPIView):
     # lookup_field = "pk", this is the default
     lookup_url_kwarg = "pk"
 ```
+
+
+## Add a Filter
+Suppose you want to show books that contain an specific word in their title. So, there is a function in `GenericAPIView` titled `get_queryset`, which is responsible to update the `queryset` on every request. All we have to do, is to modify this function.
+
+```python
+from django.db.models import Q
+from rest_framework.generics import ListCreateAPIView
+
+from tutorial.models import Book
+from tutorial.serializers import BookSerializer
+
+
+class BookListAPIView(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        conditions = Q()
+
+        allowed_fields = {f.name for f in self.model._meta.get_fields()}
+
+        for field, value in self.reques.GET.items():
+            if field not in allowed_fields:
+                continue
+
+            conditions = conditions & Q(**{field+'__icontains': value})
+        
+        return queryset.filter(conditions)
+```
