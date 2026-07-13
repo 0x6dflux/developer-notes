@@ -129,6 +129,7 @@ from tutorial.serializers import BookSerializer
 
 
 class BookListAPIView(ListCreateAPIView):
+    # model = Book
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
@@ -136,7 +137,9 @@ class BookListAPIView(ListCreateAPIView):
         queryset = super().get_queryset()
         conditions = Q()
 
-        allowed_fields = {f.name for f in self.model._meta.get_fields()}
+        allowed_fields = {f.name for f in self.queryset.model._meta.get_fields()}
+        # allowed_fields = {f.name for f in self.model._meta.get_fields()}
+        # the above definition requires, model = Book
 
         for field, value in self.reques.GET.items():
             if field not in allowed_fields:
