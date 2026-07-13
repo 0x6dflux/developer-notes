@@ -8,7 +8,9 @@
     - GenericAPIView
     - Mixins
 - [ViewSet](/DRF/viewset.md)
-- [Router]
+    - ViewSet
+    - GenericViewSet
+- [Router](/DRF/router.md)
 - [Serializers](/DRF/serializers.md)
     - ModelSerializer
     - Serializer
