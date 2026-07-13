@@ -116,7 +116,9 @@ class BookDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 
 ## Add a Filter
-Suppose you want to show books that contain an specific word in their title. So, there is a function in `GenericAPIView` titled `get_queryset`, which is responsible to update the `queryset` on every request. All we have to do, is to modify this function.
+Suppose you want to show books that contain an specific word in their title. This specific word comes from a query string in the request. 
+
+To implement this feature, there is a function in `GenericAPIView` titled `get_queryset`, which is responsible to update the `queryset` on every request. All we have to do, is to modify this function.
 
 ```python
 from django.db.models import Q
