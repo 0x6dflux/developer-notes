@@ -1,3 +1,5 @@
+# DRF Exceptions
+
 link to [Django Exceptions](../Django/exceptions.md)
 
 an standard for errors shall be stablish.
@@ -5,6 +7,28 @@ learn how to customize an exception_handler to raise a 404 error instead of 500!
 
 in APIView, there is a method to get an exception_handler!!!
 
-## List of Exceptions
+# List of Exceptions
+
+## ViewSet Exceptions
+###### #1
+Suppose you have added a method name, e.g. 'asghar', in the `actions` argument, but this method is not defined in the view class. So, ViewSet will raise the following exception:
+
+![Method Not Found](/DRF/exceptions/viewset_exceptions/method-not-found-1.png)
+![Method Not Found](/DRF/exceptions/viewset_exceptions/method-not-found-2.png)
+
+ViewSet will verify methods name in advance, please see the code.
+
+###### #2
+Suppose you have defined an unknown HTTP method in the `actions` argument, e.g. `{..., 'asghar': 'perform_update'}`. ViewSet will ignore this method.
+
+`CONCLUSION` DRF ViewSet checks the view class methods name, but does not care about undefined HTTP methods.
+
+###### #3
+Suppose you mis-mapped a method to a wrong HTTP method, E.g. `'get': 'perform_update`.
+
+![Mis-Mapped Method](/DRF/exceptions/viewset_exceptions/mis-mapped-method-1.png)
+
+This exception is true, since, to retrieve an item, an identifier is needed. But, perform_update is not related to this HTTP method.
+
 
 ## Exception Handling

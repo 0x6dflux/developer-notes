@@ -52,3 +52,20 @@
 console.log('hello');
 alert('hello');
 ```
+
+
+## Add jQuery File
+```html
+<body>
+    ...
+
+    <!-- follow the order of import -->
+    <script src='jquery_3.5.1.min.js'></script>
+    <!-- import bootstrap js files -->
+    <!-- import other javascript files -->
+</body>
+```
+
+`IMPORTANT` Do not use jquery slim version `https://code.jquery.com/jquery-4.0.0.slim.min.js`, it does not have AJAX.   
+
+`IMPORTANT` Write your AJAX request in another JavaScript file and add an script tag at the end of your imports.
