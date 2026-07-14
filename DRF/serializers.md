@@ -1,5 +1,4 @@
-# ModelSerializer
-
+# Serializer
 model --->SERIALIZER---> pure python type (usually dictionary) --->SOME MODULE methods (e.g. json.dump)---> json
 
 The above overall process is not the serializer's responsibility.
@@ -7,6 +6,12 @@ The above overall process is not the serializer's responsibility.
 Serializer will only convert a model instance to a pure python type (dict, list, etc.). The reason lies on:
 1. Single Responsibility Principle (SRP)
 2. Defining different parser than renderer. Maybe we want to convert to a different type than we received. It is not common, but in this way, we can receive XML and respond in json.
+
+
+# ModelSerializer
+```python
+
+```
 
 ## Parameters
 In view, when we are instantiating a serializer, bare in mind:
@@ -86,7 +91,46 @@ class AuthorCreateWithFullnameSerializer(serializers.Serializer):
         # instance shall be returned
         return instance
 ```
-The above solution, is what DRF gave us. Instead, every steps defined above, shall be implemented in view without using ViewSet (which requires writing more codes). Unfortunately, as per clean code logics, the later version is preferred =(
+----
+### `DESIGN TIP`
+The above solution, is what DRF provided due to simplicity, not the best design.
+
+Instead, every steps defined above, shall be implemented in view (maybe without using ViewSet, which requires writing more codes). 
+
+```python
+class AuthorViewSet(ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorCreateWithFullnameSerializer
+
+    # this below method shall be overridden 
+    # to define what our business logic wants 
+    def perform_create(self, serializer):
+        # what we have written in the serializer create method
+        name_parts = serializer.validated_data['fullname'].split(' ')
+        # to have the same output like ModelSerializer after 
+        # hitting the POST button, we shall update the serializer instance
+        serializer.instance = Author.objects.create(
+            first_name=name_parts[0],
+            last_name=name_parts[1],
+        )
+        # return Author.objects.create(
+        #     first_name=name_parts[0],
+        #     last_name=name_parts[1],
+        # )
+```
+
+As per modern design principles (separation of concerns), saving on database in a UI layer is not a good practice. 
+
+Since the `serializer is a UI layer`, saving on database shall not be implemented in the serializer class. Another layer shall take care of this responsibility in the multi-layer architecture.
+
+Serializer is responsible for getting the inputs, performing some simple and basic validations (e.g. does the email contain @ sign, is the domain included in the email), etc. In the above case, a validation shall be defined in the serializer to check that whether the fullname field contains only one space or not. This validation belongs to the serializer.
+
+But, serializers shall not contain all validations. Complex validations which requires reading data (e.g. if a product is available in the inventory, extend this example for websites like Amazon or Digikala), shall not be checked in the serializer. In general, any kind of business logic shall not be written in the serializer; perhaps, to be implemented in a view - which still is not the bast place, but better than serializer.
+
+This tip is also valid for the update method!
+
+----
+
 
 ## Field
 The parent class of other serializer fields. Its parameters shall be pass only with kwargs.
