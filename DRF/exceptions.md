@@ -31,4 +31,12 @@ Suppose you mis-mapped a method to a wrong HTTP method, E.g. `'get': 'perform_up
 This exception is true, since, to retrieve an item, an identifier is needed. But, perform_update is not related to this HTTP method.
 
 
+## Serializer Exceptions
+###### #1
+All serializers shall define the create method, otherwise the `BaseSerializer` class will raise the following error. Even, the `ModelSerializer` and `ListSerializer` have defined this method.
+
+![Create() must be implemented ](/DRF/exceptions/serializers_exception/create-not-implemented-1.png)
+![Create() must be implemented ](/DRF/exceptions/serializers_exception/create-not-implemented-2.png)
+
+
 ## Exception Handling
