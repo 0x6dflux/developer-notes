@@ -117,6 +117,8 @@ class AuthorViewSet(ModelViewSet):
         #     first_name=name_parts[0],
         #     last_name=name_parts[1],
         # )
+        # the above return will produce a different 
+        # output in the browseable api view
 ```
 
 As per modern design principles (separation of concerns), saving on database in a UI layer is not a good practice. 
