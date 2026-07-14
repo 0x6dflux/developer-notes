@@ -10,6 +10,8 @@ Serializer will only convert a model instance to a pure python type (dict, list,
 
 # ModelSerializer
 
+`IMPORTANT` If the serializer field name is equal to the model name, the connection will be established automatically. Otherwise, pass an argument titled `source` following with the model field name.
+
 ## PrimaryKeyRelatedField
 ```python
 class BookSerializer(serializers.ModelSerializer):
@@ -62,8 +64,112 @@ class BookSerializer(serializers.ModelSerializer):
 
 ## SlugRelatedField
 ```python
-
+class Author(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    slug = models.CharField(max_length=10, unique=True)
 ```
+```python
+class AuthorCreateWithFullnameSerializer(serializers.Serializer):
+    # the below order defines the order of presentation in the browseable api view
+    id = serializers.BigIntegerField(read_only=True)
+    first_name = serializers.CharField(read_only=True)
+    last_name = serializers.CharField(read_only=True)
+    fullname = serializers.CharField(min_length=10, max_length=250, required=True)
+    slug = serializers.CharField(max_length=10)
+```
+```python
+class BookSerializer(serializers.ModelSerializer):
+    author_name = serializers.SlugRelatedField(
+        queryset=Author.objects.all(),
+        slug_field='slug',
+    )
+    # queryset and slug_field are needed
+    # the slug_field is needed to compare the input data with the corresponding
+    # field, not the id
+    # like id, it can be stored with a keyword, a slug field shall be
+    # added to the model which must be unique and not bland
+    # id is an integer, but slug is a meaningful string
+
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+```
+
+## HyperlinkedRelatedField
+```python
+class BookSerializer(serializers.ModelSerializer):
+    # author_name = serializers.HyperlinkedRelatedField(
+    #     queryset=Author.objects.all(),
+    #     view_name='author-detail',
+    # )
+    # the view_name is required as a string to create the link
+
+    # or
+    author_link = serializers.HyperlinkedRelatedField(
+        view_name='author-detail',
+        # if the view receives a lookup_url_kwarg other than default (pk),
+        # pass the relevant parameter
+        # lookup_url_kwarg='kambiz',
+        source='author',
+        read_only=True,  # it is hard to create with hyperlink
+    )
+    author = serializers.StringRelatedField()
+    author_pk = serializers.PrimaryKeyRelatedField(
+        queryset=Author.objects.all(),
+        source='author',
+        write_only=True,
+    )
+
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+```
+
+## HyperlinkedModelSerializer
+
+
+
+## depth in Meta
+It is used to represent the instance instead of pk, string, slug, or hyperlink.
+
+```python
+# type 1
+
+class BookSerializer(serializers.ModelSerializer):
+    author = AuthorCreateWithFullnameSerializer()
+    # can we load it lazy?
+
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+```
+
+```python
+# type 2
+
+class BookSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+        depth = 1
+        # defines the level of related fields
+        # with read_only = True
+        # default is depth = 0
+```
+
+### `SOFTWARE ENGINEERING, API DESIGN` 
+APIs with deep layers of instances is not reasonable!
+- Depth is infinite, there is no end for it.
+- Data volume increases, causes the data transferring slow.
+
+`SOLUTION` Use id instead of depth alongside with a list of ids.
+
 
 ## Parameters
 In view, when we are instantiating a serializer, bare in mind:
@@ -197,6 +303,7 @@ The parent class of other serializer fields. Its parameters shall be pass only w
 |default||shall be set if the field is required|
 |validators|||
 |source|str|the model field name|
+|view_name|str|to create the hyperlink|
 
 `IMPORTANT` Read and understand the codes provided for `Field`. For example, read_only and write_only can be True simultaneously, there is an assert expression for it. Another example is required and default.
 
