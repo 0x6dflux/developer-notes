@@ -9,6 +9,58 @@ Serializer will only convert a model instance to a pure python type (dict, list,
 
 
 # ModelSerializer
+
+## PrimaryKeyRelatedField
+```python
+class BookSerializer(serializers.ModelSerializer):
+    # changing the type of a field
+    # write the exact field name and override its model field
+    # for example a field can be turned off
+    # author = None  # to turn off a field 
+    # the above line did not work, how can we turn it off with None?
+    
+    # all related fields type is PrimaryKeyRelatedField by default
+    # the queryset is an essential parameter for RelatedField class
+    author = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all())
+    # a filter can be set on the queryset argument, 
+    # queryset=Author.objects.filter(first_name__istartswith='j')
+    # note that this queryset will be used by the serializer validator
+    # when a new book is created by POST, if the author first_name
+    # does not start with 'j', the validator raises an error that this
+    # author is not in my database
+
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+```
+
+## StringRelatedField
+```python
+class BookSerializer(serializers.ModelSerializer):
+    # author = serializers.StringRelatedField()
+    # this field is read_only by default
+    # the queryset is not required for read_only fields like StringRelatedField
+    # it is not possible to add an Book using a string (not logical)
+    # now the author field of the model has been overridden
+    # if you want to add another book (POST), 
+    # the author field can not receive data due to StringRelatedField type
+    # to solve this, add another field like below:
+    # author_pk = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all(), source='author', write_only=True)
+
+    # below changes will make things prettier
+    author_name = serializers.StringRelatedField(source='author')
+    # author_name represents the author name
+    author = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all(), write_only=True)
+    # now author can receive data
+
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+```
+
+## SlugRelatedField
 ```python
 
 ```
@@ -144,6 +196,7 @@ The parent class of other serializer fields. Its parameters shall be pass only w
 |required|bool||
 |default||shall be set if the field is required|
 |validators|||
+|source|str|the model field name|
 
 `IMPORTANT` Read and understand the codes provided for `Field`. For example, read_only and write_only can be True simultaneously, there is an assert expression for it. Another example is required and default.
 
