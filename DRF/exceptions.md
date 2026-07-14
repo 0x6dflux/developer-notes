@@ -39,4 +39,10 @@ All serializers shall define the create method, otherwise the `BaseSerializer` c
 ![Create() must be implemented ](/DRF/exceptions/serializers_exception/create-not-implemented-2.png)
 
 
+###### #2
+The `queryset` parameter is not required for `read_only` fields, e.g. `StringRelatedField`.
+
+![No queryset is needed for read_only fields](/DRF/exceptions/serializers_exception/read-only-fields-do-not-require-queryset-1.png)
+
+
 ## Exception Handling
