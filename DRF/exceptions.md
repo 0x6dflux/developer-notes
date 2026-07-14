@@ -45,4 +45,10 @@ The `queryset` parameter is not required for `read_only` fields, e.g. `StringRel
 ![No queryset is needed for read_only fields](/DRF/exceptions/serializers_exception/read-only-fields-do-not-require-queryset-1.png)
 
 
+###### #2
+The HyperlinkedRelatedField requires `view_name` parameter.
+
+![View name is required](/DRF/exceptions/serializers_exception/view-name-is-required-1.png)
+
+
 ## Exception Handling
