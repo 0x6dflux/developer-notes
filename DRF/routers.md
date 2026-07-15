@@ -55,3 +55,5 @@ def get_recent_books(self, request):
 
     return Response(s.data)
 ```
+
+`ADVICE` Review the lines of codes where DRF generates static and dynamic routes.
