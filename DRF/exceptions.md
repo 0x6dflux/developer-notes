@@ -35,20 +35,20 @@ This exception is true, since, to retrieve an item, an identifier is needed. But
 ###### #1
 All serializers shall define the create method, otherwise the `BaseSerializer` class will raise the following error. Even, the `ModelSerializer` and `ListSerializer` have defined this method.
 
-![Create() must be implemented ](/DRF/exceptions/serializers_exception/create-not-implemented-1.png)
-![Create() must be implemented ](/DRF/exceptions/serializers_exception/create-not-implemented-2.png)
+![Create() must be implemented ](/DRF/exceptions/serializers_exceptions/create-not-implemented-1.png)
+![Create() must be implemented ](/DRF/exceptions/serializers_exceptions/create-not-implemented-2.png)
 
 
 ###### #2
 The `queryset` parameter is not required for `read_only` fields, e.g. `StringRelatedField`.
 
-![No queryset is needed for read_only fields](/DRF/exceptions/serializers_exception/read-only-fields-do-not-require-queryset-1.png)
+![No queryset is needed for read_only fields](/DRF/exceptions/serializers_exceptions/read-only-fields-do-not-require-queryset-1.png)
 
 
 ###### #2
 The HyperlinkedRelatedField requires `view_name` parameter.
 
-![View name is required](/DRF/exceptions/serializers_exception/view-name-is-required-1.png)
+![View name is required](/DRF/exceptions/serializers_exceptions/view-name-is-required-1.png)
 
 
 ## Exception Handling
