@@ -57,3 +57,7 @@ def get_recent_books(self, request):
 ```
 
 `ADVICE` Review the lines of codes where DRF generates static and dynamic routes.
+
+
+## QUESTION
+How does DRF lazily import renderer_classes from the settings, but, the renderer_classes argument shall not be lazily passed when a method is decorated by `@action`?
