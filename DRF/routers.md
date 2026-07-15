@@ -27,6 +27,28 @@ urlpatterns += router.urls
 ## DefaultRouter
 Same as SimpleRouter, but, adds a root url to show a list of urls in the browseable api view (useful for documenting and giving help on the provided API).
 
+### Example
+```python
+from rest_framework.routers import DefaultRouter
+
+
+router = DefaultRouter(user_regex_path=False)
+router.register('book', BookAPIView, basename='book')
+router.register(prefix='author', viewset=AuthorViewSet)
+# passing basename argument is essential for the below line,
+# since the viewset is not a ModelViewSet
+router.register(prefix='system', viewset=HelloViewSet, basename='system')
+
+
+urlpatterns = [
+    ...
+]
+
+urlpatterns += router.urls
+```
+
+`NOTE` The system url has not been added to the root url - perhaps, due to the fact, that this is not related to any model.
+
 ## BaseRouter
 ### basename Parameter
 It is similar to namespace and creates `name` argument for path. As default, the `BaseRouter` sets the model name as the basename, unless you specify it.
@@ -63,8 +85,28 @@ def get_recent_books(self, request):
 How does DRF lazily import renderer_classes from the settings, but, the renderer_classes argument shall not be lazily passed when a method is decorated by `@action`?
 
 
-## Extra Exercise
+## Extra Exercises
 ```python
+from rest_framework.decorators import action
+
+
+class BookAPIView(ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_url_kwarg = 'kambiz'
+
+    @action(methods=['get'], detail=False, url_path='recent', renderer_classes=[XMLRenderer])
+    def ger_recent_book(self, request):
+        q = self.get_queryset().order_by('-id')[:3]
+        s = self.get_serializer(q, many=True)
+
+        return Response(s.data)
+```
+
+```python
+from rest_framework.decorators import action
+
+
 class AuthorViewSet(ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
