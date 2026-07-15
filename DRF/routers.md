@@ -61,3 +61,20 @@ def get_recent_books(self, request):
 
 ## QUESTION
 How does DRF lazily import renderer_classes from the settings, but, the renderer_classes argument shall not be lazily passed when a method is decorated by `@action`?
+
+
+## Extra Exercise
+```python
+class AuthorViewSet(ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+    @action(detail=True)
+    def books(self, request, pk):
+        author = self.get_object()
+        book_serializer = BookSerializer(author.book_set.all(), many=True)
+        # self.get_serializer() is not true in this case,
+        # since it will return the serializer related to Author
+
+        return Response(book_serializer.data)
+```
