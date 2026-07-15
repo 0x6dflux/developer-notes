@@ -56,6 +56,12 @@ The HyperlinkedRelatedField requires `view_name` parameter.
 ![View name is required](/DRF/exceptions/serializers_exceptions/view-name-is-required-1.png)
 
 
+###### #3
+See line 997 of `ModelSerializer(Serializer)` in `rest_framework.serializers` file.
+
+![Writable nested fields not supported](/DRF/exceptions/serializers_exceptions/writable-nested-fields-not-supported-1.png)
+
+
 ## Routers Exceptions
 ###### #1
 When defining a non-model viewset, the router is not able to get the model name to set the basename parameter in generating the urls.
