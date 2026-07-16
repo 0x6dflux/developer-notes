@@ -168,7 +168,7 @@ APIs with deep layers of instances is not reasonable!
 - Depth is infinite, there is no end for it.
 - Data volume increases, causes the data transferring slow.
 
-`SOLUTION` Use id instead of depth alongside with a list of ids.
+`SOLUTION` Use id instead of depth alongside with a list of ids. Provide an API for a list of ids to be used by a frontend developer.
 
 
 ## Parameters
@@ -317,3 +317,81 @@ The parent class of other serializer fields. Its parameters shall be pass only w
 |max_length|int||
 |min_length|int||
 ||||
+
+
+
+## Nested ReadOnly
+
+
+## Nested Writable
+```python
+# serializers.py
+
+class AuthorMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'slug', 'fullname']
+
+
+class BookSerializer(serializers.ModelSerializer):
+    author = AuthorMiniSerializer()
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+```
+
+Now, to create a new book, the browseable pi view receives the author as below:
+```
+{
+    'author': {
+        'slug': ''
+    },
+    'title': '',
+    'categories': []
+}
+```
+
+An error will be raised that `create` and `update` methods shall be implemented.
+
+```python
+# serializers.py
+
+class AuthorMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'slug', 'fullname']
+
+
+class BookSerializer(serializers.ModelSerializer):
+    author = AuthorMiniSerializer()
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+    def create(self, validated_data):
+        author_data = validated_data.pop('author')  # is a dictionary
+        # the author, which is the nested field shall be popped
+        # to prevent the construction of this field in the super().create()
+        # and to prevent raising the exception
+
+        # two options may happen, the user may send
+        # a name of a new author
+        # or
+        # a name of a existed author
+        author, _ = Author.objects.get_or_create(
+            slug=author_data['slug'], 
+            defaults=author_data
+        )
+        
+        # the super().create() is needed for constructing other fields
+        validated_data['author'] = author
+        return super().create(validated_data)
+        # or
+        # implement the create yourself
+
+    # a same scenario shall be performed for update method
+    def update(self, instance, validated_data):
+        pass
+```

@@ -75,6 +75,8 @@ urlpatterns = [
 ## ViewSet
 This class inherits from `ViewSetMixin` and `APIView`.
 
+Using ViewSet is a good habit. But why?
+
 
 ## GenericViewSet
 This class inherits from `ViewSetMixin` and `GenericAPIView`.
@@ -103,3 +105,40 @@ A viewset that provides default `list()` and `retrieve()` actions.
 
 ## ModelViewSet
 A viewset that provides default `create()`, `retrieve()`, `update()`, `partial_update()`, `destroy()` and `list()` actions.
+
+### Examples
+```python
+class BookAPIView(ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_url_kwarg = 'kambiz'
+```
+
+```python
+class AuthorViewSet(ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+```
+
+
+## Non-Model ViewSet
+
+### Examples
+```python
+from datetime import datetime
+
+from rest_framework.decorators import action
+from rest_framework.viewsets import ViewSet
+
+
+class HelloViewSet(ViewSet):
+    @action(detail=False)
+    def greeting(self, request):
+        return Response('Hello World')
+
+    @action(detail=False)
+    def time(self, request):
+        return Response(datetime.now())
+```
+
+Then register the `HelloViewSet` in the urls.py file - see [Routers](/DRF/routers.md).
