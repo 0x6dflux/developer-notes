@@ -84,6 +84,20 @@ def get_recent_books(self, request):
 ## QUESTION
 How does DRF lazily import renderer_classes from the settings, but, the renderer_classes argument shall not be lazily passed when a method is decorated by `@action`?
 
+`SOLUTION` The renderer_classes belongs to line 108 of `rest_framework.views` which loads its value from settings by default. In `APIView(View)` class definition, line 266, it tries to instantiate from the renderer_classes. If an string value to be given for this attribute,an exception an exception will be raised indicating that str is not callable. Note that, in settings, the default values for this attribute shall be set in string. What is the difference?
+
+There is an extra process for getting default values from settings. This process is defined in the `rest_framework.settings` file where the APISettings class has been defined: 
+- The `__getattr__` method has been overridden.
+- Checks `if attr in self.import_strings` - line 229
+- The list of `IMPORT_STRINGS` can be found in line 136
+- Then it run `perform_import` method - line 163
+- The class will be extracted by `import_from_string` method - line 177
+- The `import_string` method will be run - line 19
+- The import_string method will find the module and perform `cached_import` method (line 8)
+- Finally, the `import_module` will be run from `importlib` - `from importlib import import_module`
+
+`NOTE` All process will be occurred in line 108 of `rest_framework.views`.
+
 
 ## Extra Exercises
 ```python
