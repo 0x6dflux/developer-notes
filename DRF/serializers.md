@@ -9,8 +9,90 @@ Serializer will only convert a model instance to a pure python type (dict, list,
 
 
 # ModelSerializer
-
 `IMPORTANT` If the serializer field name is equal to the model name, the connection will be established automatically. Otherwise, pass an argument titled `source` following with the model field name.
+
+
+
+### Examples
+```python
+# models.py
+
+from django.db import models
+
+
+class Author(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    slug = models.CharField(max_length=10)
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+```
+#### Type 1
+```python
+# serializers.py
+
+from rest_framework import serializers
+
+from test_app.models import Author, Book
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = "__all__"
+```
+#### Output
+![Model serializer type1](/DRF/serializers/model-serializer-type1-1.png)
+
+`NOTE` The `full_name` property will not appear on GET results and the form to POST the data. Alternatively names in the fields options can map to properties or methods which take no arguments that exist on the model class.
+
+resource: https://www.django-rest-framework.org/api-guide/serializers/#specifying-which-fields-to-include
+
+
+#### Type 2
+To customize the fields to be shown or filled by user:
+```python
+# serializers.py
+
+from rest_framework import serializers
+
+from test_app.models import Author, Book
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        # to include the properties, the fields shall be specified manually
+        fields = ["id", "full_name", "first_name", "last_name", "slug"]
+        # the order of fields in the above line,
+        # defines the order of fields in the browseable api view
+        extra_kwargs = {
+            "full_name": {"read_only": True},
+            "first_name": {"write_only": True},
+            "last_name": {"write_only": True},
+        }
+
+# or
+
+
+from rest_framework import serializers
+
+from test_app.models import Author, Book
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(max_length=50, write_only=True)
+    last_name = serializers.CharField(max_length=50, write_only=True)
+
+    class Meta:
+        model = Author
+        fields = ["id", "full_name", "slug", "first_name", "last_name"]
+```
+`OUTPUT`
+![Model serializer type2](/DRF/serializers/model-serializer-type2-1.png)
+
 
 ## PrimaryKeyRelatedField
 ```python
@@ -132,7 +214,21 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 
-## depth in Meta
+## Meta
+
+### model
+
+### fields
+
+### exclude
+
+### extra_kwargs
+resource: https://www.django-rest-framework.org/api-guide/serializers/#additional-keyword-arguments
+
+### read_only_fields
+resource: https://www.django-rest-framework.org/api-guide/serializers/#specifying-read-only-fields
+
+### depth
 It is used to represent the instance instead of pk, string, slug, or hyperlink.
 
 ```python
@@ -318,10 +414,70 @@ The parent class of other serializer fields. Its parameters shall be pass only w
 |min_length|int||
 ||||
 
+## SerializerMethodField
+resource: https://www.django-rest-framework.org/api-guide/fields/#serializermethodfield
 
+
+# Nested Serializer
+The related field shall receive an instance of serializer class.
+```python
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'name', 'slug']
+
+
+class BookSerializer(serializer.ModelSerializer):
+    # suppose that `a` is a related field
+    author = AuthorSerializer()
+    # now, a nested serializer is defined
+    
+
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'author']
+```
 
 ## Nested ReadOnly
+```python
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'name', 'slug']
 
+
+class BookSerializer(serializer.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    
+
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'author']
+```
+
+The `author` is a read only field. To create a book, an author shall be defined. However, it is not possible with the above version. A new write only field shall be defined.
+
+```python
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'name', 'slug']
+
+
+class BookSerializer(serializer.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    author_slug = serializers.SlugRelatedField(
+        slug_field='slug',
+        source='author',
+        queryset=Author.objects.all(),
+        write_only=True,
+    )
+    
+
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'author', 'author_slug']
+```
 
 ## Nested Writable
 ```python
@@ -341,7 +497,7 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 ```
 
-Now, to create a new book, the browseable pi view receives the author as below:
+Now, to create a new book, the browseable api view receives the author as below:
 ```
 {
     'author': {
@@ -352,7 +508,7 @@ Now, to create a new book, the browseable pi view receives the author as below:
 }
 ```
 
-An error will be raised that `create` and `update` methods shall be implemented.
+An error will be raised that `create` and `update` methods shall be implemented. What I understand is that, the BookSerializer is only able to create Book instances, not the Author ones. To enable this feature, the `create` and `update` methods shall be overridden.
 
 ```python
 # serializers.py
@@ -393,5 +549,37 @@ class BookSerializer(serializers.ModelSerializer):
 
     # a same scenario shall be performed for update method
     def update(self, instance, validated_data):
-        pass
+        if 'author' in validated_data:
+            author_data = validated_data.pop('author')
+            Author.objects.update_or_create(
+                slug=author_data['slug'],
+                defaults=author_data,
+            )
+            instance.author = Author.objects.get(slug=author_data['slug'])
+        return super().update(instance, validated_data)
+        # may raise uniqueness error, override the slug field in the serializer
 ```
+
+
+# Serializer Validation
+It is possible to pass built-in or customized validators to the serializer class. See the docs.
+
+resource: https://www.django-rest-framework.org/api-guide/serializers/#validators
+
+To implement a validator, it shall inherits from `BaseValidator`. See the doc.
+
+`NOTE` If there are numerous serializer and validators, it is recommended to define a class for your own validators.
+
+## Field-Level Validation
+resource: https://www.django-rest-framework.org/api-guide/serializers/#field-level-validation
+
+`NOTE` Field validators will be run prior to Object validators.
+
+## Object-Level Validation
+resource: https://www.django-rest-framework.org/api-guide/serializers/#object-level-validation
+
+`NOTE` The request may come from the create or update methods. The DRF distinguish this by the presence of `instance` attribute.
+
+
+# Extra Context
+resource: https://www.django-rest-framework.org/api-guide/serializers/#including-extra-context
