@@ -21,6 +21,12 @@ resource: https://www.django-rest-framework.org/api-guide/serializers/#passing-a
 
 
 # ModelSerializer
+resource: https://www.django-rest-framework.org/api-guide/serializers/#modelserializer
+
+Any relationships such as foreign keys on the model will be mapped to PrimaryKeyRelatedField. Reverse relationships are not included by default unless explicitly included as specified in the serializer relations documentation.
+
+Use `repr` function to inspect a ModelSerializer.
+
 `IMPORTANT` If the serializer field name is equal to the model name, the connection will be established automatically. Otherwise, pass an argument titled `source` following with the model field name.
 
 
