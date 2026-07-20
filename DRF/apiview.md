@@ -1,4 +1,11 @@
-# Implement CRUD Using APIView
+# Function-based View
+resource: https://www.django-rest-framework.org/api-guide/views/#function-based-views
+
+
+# Class-based View
+resource: https://www.django-rest-framework.org/api-guide/views/#class-based-views
+
+
 |CRUD|Action|
 |--:|:--|
 |C|Create|
