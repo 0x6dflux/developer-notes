@@ -7,6 +7,7 @@
 - [Operators](/JavaScript/operators.md)
 - [Methods](/JavaScript/methods.md)
 - [Functions](/JavaScript/functions.md)
+- [Objects](/JavaScript/objects.md)
 - [HTML Document Object Model (DOM)](/JavaScript/dom.md)
 - [A Basic BackEnd Server](/JavaScript/backend_server.py)
 - [AJAX](/JavaScript/ajax.md)
