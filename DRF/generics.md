@@ -1,3 +1,12 @@
+# Generic Views
+example: https://www.django-rest-framework.org/api-guide/generic-views/#examples
+
+resource: https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview
+
+### Avoiding N+1 Queries
+resource: https://www.django-rest-framework.org/api-guide/generic-views/#avoiding-n1-queries
+
+
 # Implement CRUD Using Generics
 Look at `models.py`, `settings.py`, and `serializers.py` in [APIView](/DRF/apiview.md) file.
 
